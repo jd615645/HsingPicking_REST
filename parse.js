@@ -7,9 +7,9 @@ const careerN_1042 = require('./data/1042/career_N').course
 const careerU_1042 = require('./data/1042/career_U').course
 const careerO_1042 = require('./data/1042/career_O').course
 
-const careerN_1051 = require('./data/1052/career_N').course
-const careerU_1051 = require('./data/1052/career_U').course
-const careerO_1051 = require('./data/1052/career_O').course
+const careerN_1051 = require('./data/1051/career_N').course
+const careerU_1051 = require('./data/1051/career_U').course
+const careerO_1051 = require('./data/1051/career_O').course
 
 const careerN_1052 = require('./data/1052/career_N').course
 const careerU_1052 = require('./data/1052/career_U').course

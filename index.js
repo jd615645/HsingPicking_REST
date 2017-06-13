@@ -3,6 +3,7 @@ const config = require('./data/config')
 const deptData = require('./data/deptData')
 const express = require('express')
 const bodyParser = require('body-parser')
+const Promise = require('bluebird')
 const _ = require('lodash')
 const http = require('http')
 var app = express()
@@ -56,584 +57,154 @@ function errorMsg (msg) {
 }
 
 app.get('/year/:year/code/:code', (req, res) => {
-  try {
-    res.end(queryFun({
-      year: req.params.year,
-      code: req.params.code
-    }))
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    code: req.params.code
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
-// app.get('/year/:year/code/:code', (req, res) => {
-//   try {
-//     let year = req.params.year
-//     let code = req.params.code
-
-//     if (yearFormatCheck(year)) {
-//     }else {
-//       res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-//     }
-//     if (code.length === 4 && !_.isNaN(_.parseInt(code))) {
-//       let test = {
-//         term: year,
-//         code: code
-//       }
-//       Courses
-//         .findAll({
-//           where: test
-//         })
-//         .then((courses) => {
-//           let courseInfo = []
-//           for (let course of courses) {
-//             courseInfo.push(course)
-//           }
-//           courseInfo = _.uniqBy(courseInfo, 'url')
-
-//           res.end(JSON.stringify(courseInfo))
-//         })
-//     }else {
-//       res.end(JSON.stringify(errorMsg('Illegal input format இдஇ')))
-//     }
-//   } catch (error) {
-//     res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-//   }
-// })
-
-app.get('/year/:year/professor/:name', (req, res) => {
-  try {
-    let year = req.params.year
-    let professor = req.params.name
-
-    if (yearFormatCheck(year)) {
-      if (professor.length <= 10) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              professor: {
-                $like: '%' + professor + '%'
-              }
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format இдஇ')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+app.get('/year/:year/professor/:professor', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    professor: req.params.professor
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/title/:title', (req, res) => {
-  try {
-    let year = req.params.year
-    let title = req.params.title
-
-    if (yearFormatCheck(year)) {
-      if (title.length >= 2) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              $or: [
-                {
-                  title_zhTW: {
-                    $like: '%' + title + '%'
-                  }
-                },
-                {
-                  title_enUS: {
-                    $like: '%' + title + '%'
-                  }
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Title keyword must have more than 2 characters')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    title: req.params.title
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/dept/:dept', (req, res) => {
-  try {
-    let year = req.params.year
-    let dept = deptData[req.params.dept]
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(dept)) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              for_dept: dept
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format இдஇ')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    dept: req.params.dept
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/dept/:dept/level/:level', (req, res) => {
-  try {
-    let year = req.params.year
-    let dept = deptData[req.params.dept]
-    let level = req.params.level
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(dept) && level.length <= 2) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              for_dept: dept,
-              class: {
-                $like: level + '%'
-              }
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format இдஇ')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    dept: req.params.dept,
+    level: req.params.level
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/week/:week', (req, res) => {
-  try {
-    let year = req.params.year
-    let week = _.parseInt(req.params.week)
-
-    if (yearFormatCheck(year)) {
-      if (!_.isNaN(week) && _.inRange(week, 1, 6)) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              $or: [
-                {
-                  'time_1': {
-                    $like: week + '%'
-                  }
-                },
-                {
-                  'time_2': {
-                    $like: week + '%'
-                  }
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/week/:week/time/:time', (req, res) => {
-  try {
-    let year = req.params.year
-    let week = _.parseInt(req.params.week)
-    let time = _.parseInt(req.params.time)
-
-    if (yearFormatCheck(year)) {
-      if (!_.isNaN(week) && _.inRange(week, 1, 6) && !_.isNaN(time) && _.inRange(time, 1, 14)) {
-        let timeStr = String(time)
-        if (timeStr.length === 1) {
-          timeStr = '0' + timeStr
-        }
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              $or: [
-                {
-                  $and: [
-                    {
-                      'time_1': { $like: week + '%' }
-                    },
-                    {
-                      'time_1': { $like: '%.' + timeStr + '%' }
-                    }
-                  ]
-                },
-                {
-                  $and: [
-                    {
-                      'time_2': { $like: week + '%' }
-                    },
-                    {
-                      'time_2': { $like: '%.' + timeStr + '%' }
-                    }
-                  ]
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/general/:general', (req, res) => {
-  try {
-    let year = req.params.year
-    let general = generalList[req.params.general]
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(general)) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              category: general
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    general: req.params.general
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/general/:general/week/:week', (req, res) => {
-  try {
-    let year = req.params.year
-    let general = generalList[req.params.general]
-    let week = _.parseInt(req.params.week)
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(general) && _.inRange(week, 1, 6)) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              category: general,
-              $or: [
-                {
-                  'time_1': {
-                    $like: week + '%'
-                  }
-                },
-                {
-                  'time_2': {
-                    $like: week + '%'
-                  }
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    general: req.params.general,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/general/:general/week/:week/time/:time', (req, res) => {
-  try {
-    let year = req.params.year
-    let general = generalList[req.params.general]
-    let week = _.parseInt(req.params.week)
-    let time = _.parseInt(req.params.time)
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(general) && _.inRange(week, 1, 6) && !_.isNaN(time) && _.inRange(time, 1, 14)) {
-        let timeStr = String(time)
-        if (timeStr.length === 1) {
-          timeStr = '0' + timeStr
-        }
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              category: general,
-              $or: [
-                {
-                  $and: [
-                    {
-                      'time_1': { $like: week + '%' }
-                    },
-                    {
-                      'time_1': { $like: '%.' + timeStr + '%' }
-                    }
-                  ]
-                },
-                {
-                  $and: [
-                    {
-                      'time_2': { $like: week + '%' }
-                    },
-                    {
-                      'time_2': { $like: '%.' + timeStr + '%' }
-                    }
-                  ]
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    general: req.params.general,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/common/:common', (req, res) => {
-  try {
-    let year = req.params.year
-    let common = commonList[req.params.common]
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(common)) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              category: common
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    common: req.params.common
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/common/:common/week/:week', (req, res) => {
-  try {
-    let year = req.params.year
-    let common = commonList[req.params.common]
-    let week = _.parseInt(req.params.week)
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(common) && _.inRange(week, 1, 6)) {
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              category: common,
-              $or: [
-                {
-                  'time_1': {
-                    $like: week + '%'
-                  }
-                },
-                {
-                  'time_2': {
-                    $like: week + '%'
-                  }
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    common: req.params.common,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.get('/year/:year/common/:common/week/:week/time/:time', (req, res) => {
-  try {
-    let year = req.params.year
-    let common = commonList[req.params.common]
-    let week = _.parseInt(req.params.week)
-    let time = _.parseInt(req.params.time)
-
-    if (yearFormatCheck(year)) {
-      if (!_.isUndefined(common) && _.inRange(week, 1, 6) && !_.isNaN(time) && _.inRange(time, 1, 14)) {
-        let timeStr = String(time)
-        if (timeStr.length === 1) {
-          timeStr = '0' + timeStr
-        }
-        Courses
-          .findAll({
-            where: {
-              term: year,
-              category: common,
-              $or: [
-                {
-                  $and: [
-                    { 'time_1': { $like: week + '%' } },
-                    { 'time_1': { $like: '%.' + timeStr + '%' } }
-                  ]
-                },
-                {
-                  $and: [
-                    { 'time_2': { $like: week + '%' } },
-                    { 'time_2': { $like: '%.' + timeStr + '%' } }
-                  ]
-                }
-              ]
-            }
-          })
-          .then((courses) => {
-            let courseInfo = []
-            for (let course of courses) {
-              courseInfo.push(course)
-            }
-            courseInfo = _.uniqBy(courseInfo, 'url')
-
-            res.end(JSON.stringify(courseInfo))
-          })
-      }else {
-        res.end(JSON.stringify(errorMsg('Illegal input format or range ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')))
-      }
-    }else {
-      res.end(JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')))
-    }
-  } catch (error) {
-    res.end(JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・')))
-  }
+  queryFun({
+    year: req.params.year,
+    common: req.params.common,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error)))
+  })
 })
 
 app.use((req, res) => {
@@ -641,145 +212,91 @@ app.use((req, res) => {
 })
 
 function queryFun (queryData) {
-  try {
-    let year = queryData.year
-    let code = queryData.code
-    let name = queryData.name
-    let title = queryData.title
-    let dept = queryData.dept
-    let level = queryData.level
-    let general = queryData.general
-    let common = queryData.common
-    let week = queryData.week
-    let time = queryData.time
-
+  return Promise.try(() => {
     let queryObj = {}
+    _.each(queryData, (val, key) => {
+      switch (key) {
+        case 'year':
+          if (val.length !== 4 && _.isNaN(_.parseInt(val))) throw new Error('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')
+          queryObj.term = val
+          break
+        case 'code':
+          if (val.length !== 4 && !_.isNaN(_.parseInt(val))) throw new Error('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')
+          queryObj.code = val
+          break
+        case 'professor':
+          if (val >= 10) throw new Error('Illegal input format இдஇ')
+          queryObj.professor = { $like: '%' + val + '%' }
+          break
+        case 'title':
+          if (val.length >= 2) throw new Error('Title keyword must have more than 2 characters ΩДΩ')
+          queryObj['$or'] = [
+            { 'title_zhTW': { $like: '%' + val + '%' } },
+            { 'title_enUS': { $like: '%' + val + '%' } }
+          ]
+          break
+        case 'dept':
+          if (_.isUndefined(deptData[val])) throw new Error('Illegal input format இдஇ')
+          queryObj.for_dept = deptData[val]
+          break
+        case 'level':
+          console.log(val)
+          if (val.length > 2) throw new Error('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡')
+          queryObj.class = { $like: val + '%' }
+          break
+        case 'general':
+          if (_.isUndefined(generalList[val])) throw new Error('Illegal input format இдஇ')
+          queryObj.category = generalList[val]
+          break
+        case 'common':
+          if (_.isUndefined(commonList[val])) throw new Error('Illegal input format இдஇ')
+          queryObj.category = commonList[val]
+          break
+        case 'week':
+          let week = _.parseInt(val)
+          if (!_.inRange(week, 1, 6)) throw new Error('Illegal week format ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')
+          queryObj.$or = [
+            { 'time_1': { $like: week + '%' } },
+            { 'time_2': { $like: week + '%' } }
+          ]
+          break
+        case 'time':
+          let time = _.parseInt(val)
+          if (!_.inRange(time, 1, 14)) throw new Error('Illegal time format ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')
 
-    if (year.length !== 4 && _.isNaN(_.parseInt(year))) {
-      return JSON.stringify(errorMsg('404 Not Found (´;ω;`)'))
-    }else {
-      _.mergeWith(queryObj, { 'term': year })
-    }
-    if (!_.isUndefined(code)) {
-      if (code.length !== 4 && !_.isNaN(_.parseInt(code))) {
-        return JSON.stringify(errorMsg('Illegal year format ｡ﾟヽ(ﾟ´Д`)ﾉﾟ｡'))
-      }else {
-        _.mergeWith(queryObj, { 'code': code })
-      }
-    }
-    if (!_.isUndefined(name)) {
-      if (name >= 10) {
-        return JSON.stringify(errorMsg('Illegal input format இдஇ'))
-      }else {
-        _.mergeWith(queryObj, {
-          professor: { $like: '%' + name + '%' }
-        })
-      }
-    }
-    if (!_.isUndefined(title)) {
-      if (title.length >= 2) {
-        return JSON.stringify(errorMsg('Title keyword must have more than 2 characters ΩДΩ'))
-      }else {
-        _.mergeWith(queryObj, {
-          $or: [
+          let timeStr = val
+          if (val.length === 1) {
+            timeStr = '0' + val
+          }
+          queryObj.$or = [
             {
-              'title_zhTW': { $like: '%' + title + '%' }
+              $and: [
+                { 'time_1': { $like: queryData.week + '%' } },
+                { 'time_1': { $like: '%.' + timeStr + '%' } }
+              ]
             },
             {
-              'title_enUS': { $like: '%' + title + '%' }
+              $and: [
+                { 'time_2': { $like: queryData.week + '%' } },
+                { 'time_2': { $like: '%.' + timeStr + '%' } }
+              ]
             }
           ]
-        })
+          break
+        default:
+          throw new Error('Internal error ・゜・(PД`q｡)・゜・')
       }
-    }
-    if (!_.isUndefined(dept)) {
-      dept = deptData[dept]
-      if (!_.isUndefined(dept)) {
-        return JSON.stringify(errorMsg('Illegal input format இдஇ'))
-      }else {
-        _.mergeWith(queryObj, { 'for_dept': dept })
-      }
-    }
-    if (!_.isUndefined(level)) {
-      if (level.length <= 2) {
-        return JSON.stringify(errorMsg('Illegal input format இдஇ'))
-      }else {
-        _.mergeWith(queryObj, {
-          class: { $like: level + '%' }
-        })
-      }
-    }
-    if (!_.isUndefined(general)) {
-      general = generalList[general]
-      if (_.isUndefined(general)) {
-        return JSON.stringify(errorMsg('Illegal input format இдஇ'))
-      }else {
-        _.mergeWith(queryObj, { 'category': general })
-      }
-    }
-    if (!_.isUndefined(common)) {
-      common = commonList[common]
-      if (_.isUndefined(common)) {
-        return JSON.stringify(errorMsg('Illegal input format இдஇ'))
-      }else {
-        _.mergeWith(queryObj, { 'category': common })
-      }
-    }
-    if (!_.isUndefined(week)) {
-      week = _.parseInt(req.params.week)
-      if (_.inRange(week, 1, 6)) {
-        return JSON.stringify(errorMsg('Illegal week format ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡'))
-      }else {
-        if (!_.isUndefined(time)) {
-          time = _.parseInt(req.params.time)
-          if (_.inRange(time, 1, 14)) {
-            return JSON.stringify(errorMsg('Illegal time format ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡'))
-          }else {
-            _.mergeWith(queryObj, {
-              $or: [
-                {
-                  $and: [
-                    { 'time_1': { $like: week + '%' } },
-                    { 'time_1': { $like: '%.' + timeStr + '%' } }
-                  ]
-                },
-                {
-                  $and: [
-                    { 'time_2': { $like: week + '%' } },
-                    { 'time_2': { $like: '%.' + timeStr + '%' } }
-                  ]
-                }
-              ]
-            })
-          }
-        }else {
-          _.mergeWith(queryObj, {
-            $or: [
-              { 'time_1': { $like: week + '%' } },
-              { 'time_2': { $like: week + '%' } }
-            ]
-          })
-        }
-      }
-    }
+    })
 
-    Courses
+    return Courses
       .findAll({
-        where: queryObj
+        where: queryObj,
+        raw: true
       })
       .then((courses) => {
-        let courseInfo = []
-        for (let course of courses) {
-          courseInfo.push(course)
-        }
-        courseInfo = _.uniqBy(courseInfo, 'url')
-
-        return JSON.stringify(courseInfo)
+        return JSON.stringify(_.uniqBy(courses, 'url'))
       })
-
-  } catch (error) {
-    return JSON.stringify(errorMsg('Internal error ・゜・(PД`q｡)・゜・'))
-  }
+  })
 }
 
 function yearFormatCheck (year) {
