@@ -1,0 +1,7 @@
+{
+  "database": "mysql",
+  "username": "root",
+  "password": "zxcv",
+  "host": "localhost",
+  "port": 3306
+}
