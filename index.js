@@ -63,7 +63,7 @@ app.get('/year/:year/code/:code', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
