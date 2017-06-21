@@ -61,7 +61,7 @@ _.forEach(courseCollection, (iv, year) => {
         'location_2': _.isUndefined(course.location[1]) ? '' : course.location[1],
         'time_1': time[0],
         'time_2': _.isUndefined(time[1]) ? '' : time[1],
-        'obligatory': course.obligatory_tf === 'true' ? 1 : 0,
+        'obligatory': course.obligatory_tf ? 1 : 0,
         'category': courseType(course)
       }
 
@@ -70,7 +70,7 @@ _.forEach(courseCollection, (iv, year) => {
   })
 })
 
-let fields = ['id', 'term', 'code', 'title_zhTW', 'title_enUS', 'for_dept', 'intern_location', 'department', 'class', 'prerequisite', 'professor', 'time_1', 'time_2', 'discipline', 'category', 'url', 'credits', 'obligatory', 'number', 'note']
+let fields = ['id', 'term', 'code', 'title_zhTW', 'title_enUS', 'for_dept', 'location_1', 'location_2', 'intern_location', 'department', 'class', 'prerequisite', 'professor', 'time_1', 'time_2', 'discipline', 'category', 'url', 'credits', 'obligatory', 'number', 'note']
 
 var csv = json2csv({ data: codeData, fields: fields })
 

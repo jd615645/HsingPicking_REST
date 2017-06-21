@@ -1,10 +1,18 @@
 ## 可使用API
 ```
 /year/:year/code/:code
-/year/:year/professor/:name
+/year/:year/professor/:professor
+/year/:year/professor/:professor/week/:week
+/year/:year/professor/:professor/week/:week/time/:time
 /year/:year/title/:title
+/year/:year/title/:title/week/:week
+/year/:year/title/:title/week/:week/time/:time
 /year/:year/dept/:dept
+/year/:year/dept/:dept/week/:week
+/year/:year/dept/:dept/week/:week/time/:time
 /year/:year/dept/:dept/level/:level
+/year/:year/dept/:dept/level/:level/week/:week
+/year/:year/dept/:dept/level/:level/week/:week/time/:time
 /year/:year/week/:week
 /year/:year/week/:week/time/:time
 /year/:year/general/:general
@@ -21,6 +29,8 @@
 | year | string | 學年 | 1042, 1061 |
 | code | string | 課程代碼 | 6008, 0301 |
 | dept | string | 科系代碼（詳細見下表） | U56 |
+| general | string | 通識課程代碼（詳細見下表） | H |
+| common | string | 共通科目代碼（詳細見下表） | PE |
 | professor | string | 教授姓名 | 林仁昱 |
 | title | string | 課程名稱（可只有部份關鍵字） | 兒童與青少年文學研究 |
 | week | int | 取得該星期上課的課程 |3, 4 |
@@ -77,6 +87,27 @@
 }
 ```
 
+## 通識課程代碼
+```
+{
+  "H": "人文學群",
+  "S": "社會學群",
+  "N": "自然學群"
+}
+```
+
+## 共通科目代碼
+```
+{
+  "CC": "大學國文",
+  "CE": "大一英文",
+  "PE": "體育",
+  "EP": "教育學程",
+  "DE": "國防教育",
+  "OL": "全校英外語"
+}
+```
+
 ## 透過API取得之JSON欄位解釋
 ```
 {
@@ -86,13 +117,15 @@
   "title_zhTW": "中文科目名稱",
   "title_enUS": "英文科目名稱",
   "for_dept": "上這門課的系所",
+  "location_1": "上課教室(1)",
+  "location_2": "上課教室(2)",
   "intern_location": "實習教室",
   "department": "開課單位",
   "class": "班級",
   "prerequisite": "先修課程",
   "professor": "授課教授",
-  "time_1": "第一組上課時間",
-  "time_2": "第二組上課時間",
+  "time_1": "上課時間(1)",
+  "time_2": "上課時間(2)",
   "discipline": "通識課程學群",
   "category": "課程類別",
   "url": "課程資訊網站代碼",

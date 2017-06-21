@@ -17,6 +17,8 @@ let Courses = sequelize.define('courses', {
   title_zhTW: Sequelize.STRING,
   title_enUS: Sequelize.STRING,
   for_dept: Sequelize.STRING,
+  location_1: Sequelize.STRING,
+  location_2: Sequelize.STRING,
   intern_location: Sequelize.STRING,
   department: Sequelize.STRING,
   class: Sequelize.STRING,
@@ -73,7 +75,30 @@ app.get('/year/:year/professor/:professor', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/professor/:professor/week/:week', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    professor: req.params.professor,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/professor/:professor/week/:week/time/:time', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    professor: req.params.professor,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -84,7 +109,30 @@ app.get('/year/:year/title/:title', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/title/:title/week/:week', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    title: req.params.title,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/title/:title/week/:week/time/:time', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    title: req.params.title,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -95,7 +143,30 @@ app.get('/year/:year/dept/:dept', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/dept/:dept/week/:week', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    dept: req.params.dept,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/dept/:dept/week/:week/time/:time', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    dept: req.params.dept,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -107,7 +178,32 @@ app.get('/year/:year/dept/:dept/level/:level', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/dept/:dept/level/:level/week/:week', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    dept: req.params.dept,
+    level: req.params.level,
+    week: req.params.week
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
+  })
+})
+app.get('/year/:year/dept/:dept/level/:level/week/:week/time/:time', (req, res) => {
+  queryFun({
+    year: req.params.year,
+    dept: req.params.dept,
+    level: req.params.level,
+    week: req.params.week,
+    time: req.params.time
+  }).then((courses) => {
+    res.end(courses)
+  }).catch((error) => {
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -118,7 +214,7 @@ app.get('/year/:year/week/:week', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -130,7 +226,7 @@ app.get('/year/:year/week/:week/time/:time', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -141,7 +237,7 @@ app.get('/year/:year/general/:general', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -153,7 +249,7 @@ app.get('/year/:year/general/:general/week/:week', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -166,7 +262,7 @@ app.get('/year/:year/general/:general/week/:week/time/:time', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -177,7 +273,7 @@ app.get('/year/:year/common/:common', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -189,7 +285,7 @@ app.get('/year/:year/common/:common/week/:week', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -202,7 +298,7 @@ app.get('/year/:year/common/:common/week/:week/time/:time', (req, res) => {
   }).then((courses) => {
     res.end(courses)
   }).catch((error) => {
-    res.end(JSON.stringify(errorMsg(error)))
+    res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
 
@@ -228,7 +324,7 @@ function queryFun (queryData) {
           queryObj.professor = { $like: '%' + val + '%' }
           break
         case 'title':
-          if (val.length >= 2) throw new Error('Title keyword must have more than 2 characters ΩДΩ')
+          if (val.length < 2) throw new Error('Title keyword must have more than 2 characters ΩДΩ')
           queryObj['$or'] = [
             { 'title_zhTW': { $like: '%' + val + '%' } },
             { 'title_enUS': { $like: '%' + val + '%' } }
