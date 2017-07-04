@@ -4,6 +4,8 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
+    "parse": "node parse.js",
+    "ncu": "ncu -u && yarn",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

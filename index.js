@@ -67,7 +67,6 @@ app.get('/year/:year/code/:code', (req, res) => {
     res.end(JSON.stringify(errorMsg(error.message)))
   })
 })
-
 app.get('/year/:year/professor/:professor', (req, res) => {
   queryFun({
     year: req.params.year,

@@ -52,7 +52,7 @@ _.forEach(courseCollection, (iv, year) => {
 
       let code = course.code
       let insertData = {
-        'id': year + code,
+        'id': year + course.url,
         'term': year,
         'intern_location': course.intern_location[0],
         'title_zhTW': course.title_parsed.zh_TW,
