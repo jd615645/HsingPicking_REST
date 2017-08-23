@@ -2,7 +2,6 @@ const Sequelize = require('sequelize')
 const config = require('./data/config')
 const deptData = require('./data/deptData')
 const express = require('express')
-const bodyParser = require('body-parser')
 const Promise = require('bluebird')
 const _ = require('lodash')
 var app = express()
@@ -401,4 +400,4 @@ function yearFormatCheck (year) {
   }
 }
 
-let server = app.listen(3001)
+let server = app.listen(3002)

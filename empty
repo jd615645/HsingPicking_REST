@@ -1,0 +1,41 @@
+-- --------------------------------------------------------
+-- 主機:                           127.0.0.1
+-- 服務器版本:                        5.7.19-0ubuntu0.16.04.1 - (Ubuntu)
+-- 服務器操作系統:                      Linux
+-- HeidiSQL 版本:                  9.4.0.5125
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- 導出  表 courses.courses 結構
+CREATE TABLE IF NOT EXISTS `courses` (
+  `id` char(50) DEFAULT NULL,
+  `term` varchar(50) DEFAULT NULL,
+  `code` varchar(50) DEFAULT NULL,
+  `title_zhTW` varchar(50) DEFAULT NULL,
+  `title_enUS` text,
+  `for_dept` varchar(50) DEFAULT NULL,
+  `intern_location` varchar(50) DEFAULT NULL,
+  `department` varchar(50) DEFAULT NULL,
+  `class` varchar(50) DEFAULT NULL,
+  `prerequisite` varchar(50) DEFAULT NULL,
+  `professor` varchar(50) DEFAULT NULL,
+  `time_1` varchar(50) DEFAULT NULL,
+  `time_2` varchar(50) DEFAULT NULL,
+  `discipline` varchar(50) DEFAULT NULL,
+  `category` varchar(50) DEFAULT NULL,
+  `url` varchar(50) DEFAULT NULL,
+  `credits` int(11) DEFAULT NULL,
+  `obligatory` tinyint(4) DEFAULT NULL,
+  `number` int(11) DEFAULT NULL,
+  `note` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='\r\n';
+
+-- 資料導出被取消選擇。
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

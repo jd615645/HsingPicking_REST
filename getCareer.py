@@ -3,7 +3,8 @@ import json
 import os
 
 url = 'https://onepiece.nchu.edu.tw/cofsys/plsql/json_for_course?p_career='
-career = ['U', 'G', 'D', 'N', 'W', 'O']
+# career = ['U', 'G', 'D', 'N', 'W', 'O']
+career = ['N', 'O', 'U']
 
 try:
   for item in career:

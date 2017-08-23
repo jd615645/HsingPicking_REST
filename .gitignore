@@ -40,3 +40,4 @@ jspm_packages
 file.csv
 *.sql
 yarn.lock
+.vscode
