@@ -6,7 +6,7 @@ const Promise = require('bluebird')
 const _ = require('lodash')
 var app = express()
 
-let sequelize = new Sequelize('test', config.username, config.password, {
+let sequelize = new Sequelize('courses', config.username, config.password, {
   host: config.host,
   dialect: config.database
 })
@@ -348,10 +348,14 @@ function queryFun (queryData) {
         case 'week':
           let week = _.parseInt(val)
           if (!_.inRange(week, 1, 6)) throw new Error('Illegal week format ｡ﾟ(ﾟ´ω`ﾟ)ﾟ｡')
-          queryObj.$or = [
-            { 'time_1': { $like: week + '%' } },
-            { 'time_2': { $like: week + '%' } }
-          ]
+          if (!_.isUndefined(queryData.title)) {
+            _.assign(queryObj['$or'], { 'time_1': { $like: week + '%' } }, { 'time_2': { $like: week + '%' } })
+          }else {
+            queryObj['$or'] = [
+              { 'time_1': { $like: week + '%' } },
+              { 'time_2': { $like: week + '%' } }
+            ]
+          }
           break
         case 'time':
           let time = _.parseInt(val)
