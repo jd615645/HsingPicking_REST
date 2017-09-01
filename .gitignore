@@ -41,3 +41,4 @@ file.csv
 *.sql
 yarn.lock
 .vscode
+config.json

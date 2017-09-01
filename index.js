@@ -404,4 +404,6 @@ function yearFormatCheck (year) {
   }
 }
 
-let server = app.listen(3002)
+let server = app.listen(config.servicePort, () => {
+  console.log('listen ' + config.servicePort)
+})
